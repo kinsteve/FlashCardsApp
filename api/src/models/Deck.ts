@@ -1,9 +1,16 @@
-import mongoose, { Models } from 'mongoose';
+import {Schema , Types , model , Document} from 'mongoose';
 
-const Schema = mongoose.Schema;
-const ObjectId = mongoose.Types.ObjectId;
+const ObjectId = Types.ObjectId;
 
-const DeckSchema = new Schema({
+
+export interface Deck {
+    title: string;
+    // Add other fields if present in your schema
+}
+
+export type DeckDocument = Deck & Document;
+
+const DeckSchema = new Schema<DeckDocument>({
     title : {
         type: String,
         // required : [true , "Title is required"],
@@ -11,6 +18,7 @@ const DeckSchema = new Schema({
 })
 
 
-const DeckModel = mongoose.model('Deck',DeckSchema);
+const DeckModel = model<DeckDocument>('Deck',DeckSchema);
 
 export default DeckModel;
+

@@ -4,27 +4,26 @@ if (result.error) {
     console.error(result.error);
 }
 
-import express, { Request, Response } from 'express';
+import express, { Request, Response} from 'express';
 import DeckModel from './models/Deck';
-
 import 'colors';
+import cors from 'cors';
 import connectDB from './config/db';
+import DecksController from './controllers/DecksController';
 const app = express();
 app.use(express.json());
+app.use(cors({
+    origin:"*"                // here we add the production deployed frontend link , so that only our frontend can access this api
+}));
 const PORT = process.env.PORT || 5000;
 
 app.get("/hello",(req : Request ,res : Response)=>{
     res.send("Hello World");
 });
 
-app.post("/decks",async (req : Request ,res : Response)=>{
+app.get('/decks',DecksController.getDecks);
+app.post("/decks",DecksController.createDeck);
 
-    const newDeck = new DeckModel({
-       title : req.body.title,
-    });
-    const createdDeck = await newDeck.save();
-    res.json(createdDeck);
-});
 
 
 const url : string | undefined  = process.env.MONGO_URI;
