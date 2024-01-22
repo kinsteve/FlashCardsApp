@@ -2,24 +2,29 @@ import React, { useEffect, useState } from 'react'
 import './App.css'
 import { toast , ToastPosition} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { NavLink } from 'react-router-dom';
+import { deleteDeck } from './api/deleteDeck';
+import { Deck, getDecks } from './api/getDecks';
+import { createDecks } from './api/createDeck';
 
 function App() {
-  interface Deck{
-    _id: string;
-    title: string;
-  }
 
   const showToast = (message:string, type:string) => {
     const position : ToastPosition = 'top-right';
     if (type === 'success') {
       toast.success(message, {
         position,
-        autoClose: 3000,
+        autoClose: 2000,
       });
-    } else if (type === 'error') {      
+    } else if(type==='info'){
+      toast.info(message, {
+        position,
+        autoClose: 2000,
+      });
+     }else if (type === 'error') {      
       toast.error(message, {
         position,
-        autoClose: 3000,
+        autoClose: 2000,
       });
     }
   };
@@ -33,30 +38,24 @@ function App() {
           // alert("Please enter a valid Title");
           return;
         }
-        await fetch('http://localhost:5000/decks',{
-          method:"POST",
-          headers:{
-            "Content-Type":"application/json"
-          },
-          body: JSON.stringify({
-            title,
-          }),
-        });
+        const deck = await createDecks(title);
+        setDecks([...decks , deck]);
         setTitle("");  // promise 
         showToast("Deck Created","success");
+  }
+
+  const handleDeleteDeck=async(id:string)=>{
+    await deleteDeck(id);
+    setDecks(decks.filter((deck)=> deck._id !==id));
+    showToast("Deleted Deck","info");
   }
 
 
 useEffect(()=>{
   const fetchData = async () => {
     try {
-      const response = await fetch('http://localhost:5000/decks');
-      if (response.ok) {
-        const newDecks: Deck[] = await response.json();
+        const newDecks: Deck[] = await getDecks();
         setDecks(newDecks);
-      } else {
-        throw new Error('Error in fetch status');
-      }
     } catch (error) {
       console.error('Error fetching decks:', error);
     }
@@ -74,7 +73,10 @@ useEffect(()=>{
     <ul className="decks">
       {
         decks.map((deck)=>(
-          <li key={deck._id}>{deck.title}</li>
+          <li key={deck._id}>
+            <button onClick={()=>handleDeleteDeck(deck._id)}>❌</button>
+            <NavLink to={`decks/${deck._id}`}>{deck.title}</NavLink>
+            </li>
         ))
       }
     </ul>

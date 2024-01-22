@@ -23,7 +23,7 @@ app.get("/hello",(req : Request ,res : Response)=>{
 
 app.get('/decks',DecksController.getDecks);
 app.post("/decks",DecksController.createDeck);
-
+app.delete("/decks/:deckId" , DecksController.deleteDeck);
 
 
 const url : string | undefined  = process.env.MONGO_URI;

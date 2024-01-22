@@ -25,6 +25,17 @@ class DecksController {
         res.status(500).json({ message: 'Internal server error' });
     }
   }
+
+  static async deleteDeck(req: Request , res : Response){
+    try {
+      const id:string = req.params.deckId;
+      const deck = await DeckModel.findByIdAndDelete(id);
+      res.json(deck);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  }
 }
 
 export default DecksController;
