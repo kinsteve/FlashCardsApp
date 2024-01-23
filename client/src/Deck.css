@@ -1,0 +1,61 @@
+
+  
+  .Deck{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .Deck form{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .Deck form>input{
+    width:35%;
+    height:40px;
+    border: none;
+    border-radius: 10px;
+    text-align: center;
+    font-size: large;
+  }
+
+  h2{
+    text-align: center;
+  }
+  
+  .cards{
+    display: grid;
+    width:600px;
+    margin : 0 auto;
+    gap: 10px;
+    grid-template-columns : repeat(3,1fr);
+  }
+  
+  .cards li{
+    padding-top: 30px;
+    position: relative;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    height: 120px;
+    color:black;
+    background: white;  
+    border : 1px solid white;
+    border-radius:10px ;
+  }
+  
+  .cards li button{
+    position:absolute;
+    top:5px;
+    right:5px;
+    font-size: 10px;
+    border:none;
+    border-radius: 50%;
+  }
+  
+  .cards li:hover{
+    background: #eee;
+  }

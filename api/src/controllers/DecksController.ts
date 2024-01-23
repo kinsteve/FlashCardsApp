@@ -12,6 +12,21 @@ class DecksController {
       res.status(500).json({ message: 'Internal server error' });
     }
   }
+  
+  static async getDeckById(req: Request, res: Response) {
+    try {
+      const {deckId}= req.params;
+      const deck: DeckDocument|null = await DeckModel.findById(deckId);
+      if(!deck){
+        return res.status(404).json({message:'Deck not found'});  
+      }
+      console.log(deck);
+      res.json(deck);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  }
 
   static async createDeck(req : Request , res: Response){
     try{

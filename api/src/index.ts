@@ -5,11 +5,11 @@ if (result.error) {
 }
 
 import express, { Request, Response} from 'express';
-import DeckModel from './models/Deck';
 import 'colors';
 import cors from 'cors';
 import connectDB from './config/db';
 import DecksController from './controllers/DecksController';
+import CardController from './controllers/CardController';
 const app = express();
 app.use(express.json());
 app.use(cors({
@@ -24,7 +24,9 @@ app.get("/hello",(req : Request ,res : Response)=>{
 app.get('/decks',DecksController.getDecks);
 app.post("/decks",DecksController.createDeck);
 app.delete("/decks/:deckId" , DecksController.deleteDeck);
-
+app.get("/decks/:deckId",DecksController.getDeckById);
+app.post('/decks/:deckId/cards', CardController.createCardForDeck);
+app.delete("/decks/:deckId/cards/:index", CardController.deleteCardForDeck)
 
 const url : string | undefined  = process.env.MONGO_URI;
 
